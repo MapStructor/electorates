@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mapstory Viewer</title>
+    <meta charset="utf-8" />
+     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="vendor/jquery-ui-1.10.3.custom/css/ui-darkness/jquery-ui-1.10.3.custom.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="vendor/jquery.ui.touch-punch.min.js"></script>
+
+<!--     <script src='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' /> -->
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.4"></script>
+    <script>
+    $(document).ready(function () {
+      if(jQuery.browser.msie) alert('Sorry, this application uses state of the art HTML5 techniques which are not (well) supported by Internet Explorer.\nUse Google Chrome or Mozilla Firefox to experience the full power of HTML5 and this application');
+      $( "#slider" ).slider({min:1600,max:2017,
+      value: 2017,
+        slide: function( event, ui ) {
+          $( "#year" ).val( ui.value );
+          changeYear(ui.value);
+          hash.onMapMove();
+        },
+
+      });
+      $( "#slider2" ).slider({min:0,max:1,
+      value: 0.4,
+      step: 0.1,
+        slide: function( event, ui ) {
+          setOpacity(ui.value);
+        }
+
+      });
+
+      $( "#year" ).val( $( "#slider" ).slider( "values", 0 ) );
+
+        $('.footnote').click(function(){
+            $('#footnotediv').toggle('slide');
+        });
+      });
+
+      </script>
+    <style>
+      html {
+      font-family: 'Source Sans Pro', sans-serif;
+      font-weight: 300;
+      }
+      a {
+          font-weight: 700;
+          color: #ce5c00;
+      }
+      hr {
+         background-color: #ce5c00;
+         border: none;
+         height:1px;
+         margin-top: 20px;
+      }
+      .line {
+          margin: 10px;
+          text-align: center;
+          color: #ce5c00;
+            font-weight: 600;
+            font-style: italic;
+            font-size: 18px;
+      }
+      .logo {
+          text-align: center;
+          margin-top: 20px;
+      }
+      h1 {
+          text-align: center;
+          font-family: 'Source Sans Pro', sans-serif;
+          font-weight: 700;
+          margin-top: 0;
+      }
+      p  {
+          margin-top: 5px;
+          margin-bottom: 5px;
+      }
+      #sidepanel {
+          border: solid 2px #ce5c00;
+          border-radius: 9px;
+        display: block;
+        position: absolute;
+        float: right;
+        width: 260px;
+        
+        top: 20px;
+        right:20px;
+        
+        background: #2e3436;
+        padding: 10px;
+          padding-bottom: 0px;
+        font-size: 16px;
+        color:#eeeeec; 
+        z-index:10000;
+      }
+      #slider, #slider2{
+       width: 240px;
+      }
+      #year {
+        font-size: 20px;
+        background: none;
+        border:0; 
+          text-align: center;
+      }
+      .y1600 {
+        color: #888a85;
+      }
+      .y1700 {
+        color: #5c3566;
+      }
+      .y1800 {
+        color: #75507b;
+      }
+      .y1850 {
+        color: #a40000;
+      }
+      .y1900 {
+        color: #cc0000;
+      }
+      .y1950 {
+        color: #f57900;
+      }
+      .y2000 {
+        color: #edd400;
+      }
+
+      .k1600 {
+        background: #888a85;
+      }
+      .k1700 {
+        background: #5c3566;
+      }
+      .k1800 {
+        background: #75507b;
+      }
+      .k1850 {
+        background: #a40000;
+      }
+      .k1900 {
+        background: #cc0000;
+      }
+      .k1950 {
+        background: #f57900;
+      }
+      .k2000 {
+        background: #edd400;
+      }
+      .kleur {    
+          border: solid 1px black;
+          display: inline-block;
+          width: 20px;
+          height: 13px;
+          
+          margin-top: 3px;
+          margin-left: 10px;
+          margin-right: 3px;
+      }
+      td {
+          line-height: 14px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .leaflet-container {
+        background: #eeeeec !important;
+      }
+      .footnote {
+          cursor:pointer;
+          color: #ce5c00;
+      }
+      .info {
+         
+          margin-top: 15px;
+        font-size: 14px;
+        line-height: 170%;
+      }
+
+      #content {
+        padding: 10px;
+      }
+      #footnotediv {
+          font-style: italic;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-28801666-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+  </head>
+
+<body>
+  <div id="map" style="width: 100%; height: 100%; display:block;left: 0px; top: 0px; right: 0px; bottom: 0px; position: absolute;"></div>
+  <div id='sidepanel'>
+  <div id="content">
+<h1>MapStory Viewer</h1>
+<hr/>
+  <p class="info" style="text-align:center">
+  Show buildings that were built before:<br/>
+    + <input type="text" id="year" size="4" class="y2000" value=""/> +
+  </p>
+  <div id="slider" title="Slide this to view only buildings build before a given year"></div>
+  
+
+     <div class="line">+++ Legend +++</div>
+    <p>
+    <table>
+    <tr>
+   <td><span class="kleur k00">&nbsp;</span> < 1600</td><td><span class="kleur k1850">&nbsp;</span> 1850 - 1900<br/></td>
+   </tr><tr>
+   <td><span class="kleur k1600">&nbsp;</span>1600 - 1700 </td><td><span class="kleur k1900">&nbsp;</span> 1900 - 1950<br/></td>
+   </tr><tr>
+   <td><span class="kleur k1700">&nbsp;</span>1700 - 1800</td><td><span class="kleur k1950">&nbsp;</span> 1950 - 2000 <br/></td>
+   </tr><tr>
+   <td><span class="kleur k1800">&nbsp;</span>1800 - 1850</td><td><span class="kleur k2000">&nbsp;</span> > 2000<br/></td>
+   </tr>
+   </table>
+    </p><div class="line">+++ Info +++</div>
+  <div class='info'>
+  <p>
+    An interactive viewer to view buildings that exist(ed) in a given year. Use the slider to change that year. <span class="footnote">(more)</span></p>
+    <div id="footnotediv" style="display:none">This map was inspired by work from Geodan Research. You can view it <a href="http://bag.edugis.nl/">here</a> - <span class="footnote">hide</span></div>
+     
+  </div>
+  <button id='linkButton'>Switch to Vector Version</button>
+  </div>
+
+<script src="js/rastermap.js"></script>
+
+</body>
+</html>

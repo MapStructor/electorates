@@ -236,7 +236,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
     tilePoint.x +
     "/" +
     tilePoint.y +
-    "?access_token=pk.eyJ1Ijoibml0dHlqZWUiLCJhIjoid1RmLXpycyJ9.NFk875-Fe6hoRCkGciG8yQ";
+    "?access_token=pk.eyJ1Ijoibml0dHlqZWUiLCJhIjoiY20waDRsYWVmMDdoMDJscTRmMTB1NWJhdCJ9.Y9Y5qPNB5bviltf6cVG1uA";
   //On the img.onload store the original data of the png to the canvas element and loop through all the pixels.
   img.onload = function() {
     var height = 256;
